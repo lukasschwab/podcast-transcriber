@@ -20,7 +20,7 @@ if not deepgram_key:
     raise EnvironmentError("Missing deepgram API key")
 deepgram_client = Deepgram(deepgram_key)
 
-def main(request):
+def main():
     logging.info("Processing feed: {}".format(PODCAST_FEED))
     feed = feedparser.parse(PODCAST_FEED)
 
@@ -35,6 +35,12 @@ def main(request):
     logging.info("Processing {} new entries".format(len(unprocessed)))
     for entry in unprocessed:
         process(entry)
+
+def http_main(request):
+    main()
+
+def topic_main(event, context):
+    main()
 
 def existing_blobs():
     all_blobs = list(storage_client.list_blobs(bucket))
