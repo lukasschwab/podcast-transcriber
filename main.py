@@ -59,9 +59,9 @@ def _main():
         _process(entry)
 
 
-def __existing_blobs():
+def __existing_blobs() -> set:
     """
-    __existing_blobs returns the set of *.txt transcriptions in the
+    __existing_blobs returns the set of *.txt transcription filenames in the
     transcriptions bucket.
     """
     all_blobs = list(storage_client.list_blobs(transcriptions_bucket))
@@ -69,7 +69,7 @@ def __existing_blobs():
     return set([b.name for b in all_blobs if ".txt" in b.name])
 
 
-def __should_process(processed, entry):
+def __should_process(processed: set, entry: feedparser.FeedParserDict) -> bool:
     """
     __should_process returns True iff the name of the transcript that would be
     produced for entry does not correspond to a name in processed.
@@ -77,7 +77,7 @@ def __should_process(processed, entry):
     return __transcript_blob_name(entry) not in processed
 
 
-def __transcript_blob_name(entry):
+def __transcript_blob_name(entry) -> str:
     """
     __transcript_blob_name constructs the name of the transcript text blob that
     would be produced for entry.
@@ -85,7 +85,7 @@ def __transcript_blob_name(entry):
     return entry.link + ".txt"
 
 
-def _process(entry):
+def _process(entry: feedparser.FeedParserDict):
     """
     _process gets a transcription for entry, then
     """
@@ -100,7 +100,7 @@ def _process(entry):
     logging.info("Wrote transcript to {}".format(transcript_blob_name))
 
 
-def _transcribe(entry: feedparser.FeedParserDict):
+def _transcribe(entry: feedparser.FeedParserDict) -> dict:
     """
     _transcribe hands entry's audio enclosure to the Deepgram API and writes the
     full JSON-encoded response to the transcriptions bucket before returning it.
