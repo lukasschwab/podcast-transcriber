@@ -1,2 +1,4 @@
 .env.yaml
 __pycache__
+downloads
+*.zip

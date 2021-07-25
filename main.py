@@ -77,7 +77,8 @@ def transcribe(entry):
     response = asyncio.run(deepgram_client.transcription.prerecorded(source, {
         "punctuate": True,
         "utterances": True,
-        "diarize": True
+        "diarize": True,
+        "utt_split": 2,
     }))
     # Write response JSON to GCS
     logging.info("Got response: {}".format(response['metadata']))
