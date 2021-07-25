@@ -7,7 +7,7 @@ import json
 import feedparser
 from deepgram import Deepgram
 
-logging.info("Starting deepgram-acw")
+logging.info("Starting podcast transcriber")
 
 # Keys for required environment variables; should match keys in .env.yaml.
 ENV_TARGET_FEED_URL = 'TARGET_FEED_URL'

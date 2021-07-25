@@ -2,7 +2,7 @@ cloud_fn_config := --runtime "python37" --trigger-topic weekly-cron-topic --env-
 
 # Deploy targets
 
-deploy-topic: main.py requirements.txt .env.yaml
+deploy: main.py requirements.txt .env.yaml
 	gcloud pubsub topics describe weekly-cron-topic
 	gcloud functions deploy "deepgram-acw-cron" \
 		--entry-point "topic_main" \
@@ -15,15 +15,18 @@ deploy-http: main.py requirements.txt .env.yaml
 
 # One-time infra initialization targets
 
-cron_job: cron_topic
+cron-job: cron-topic
 	gcloud scheduler jobs create pubsub WeeklyJob \
 		--schedule="0 9 * * 1" \
 		--topic="weekly-cron-topic" \
 		--message-body="" \
 		--attributes="src=WeeklyJob"
 
-cron_topic:
+cron-topic:
 	gcloud pubsub topics create weekly-cron-topic
+
+bucket:
+	gsutil mb gs://transcriptions
 
 # Dev targets
 
