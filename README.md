@@ -12,7 +12,7 @@ A GCP Cloud Function for automatically transcribing new episodes of a podcast, b
 4. Submits those podcast episodes to the [Deepgram](https://deepgram.com/)'s automated speech recognition API for transcription;
 5. Writes the Deepgram response and a processed transcript to Google Cloud Storage.
 
-That cloud function is designed to be invoked on a regular schedule; the [setup instructions](#Setup) below and targets in the [Makefile](./Makefile) provide `cron`-like invocations by using Cloud Scheduler to publish to the Pub/Sub topic.
+That cloud function is designed to be invoked on a regular schedule; the [setup instructions](#Setup) below and [Makefile](./Makefile) provide `cron`-like invocations by using Cloud Scheduler to publish to the Pub/Sub topic.
 
 ## Usage
 
@@ -82,10 +82,15 @@ See [Deepgram's API documentation](https://developers.deepgram.com/api-reference
 
 Want transcripts in a different format? Change how [main.py#_process](./main.py) formats utterances.
 
+<!--
+
 ## To do
 
-+ Check dg usage before transcribing
-+ Document environment variable
-+ Document tuning the deepgram API params: modifying `utt_split` was useful for this pod, and would be even more useful for a slower one.
++ Check Deepgram usage before transcribing
++ Explain how it knows which episodes have been transcribed, "haywire" scenarios
++ Discuss cost
++ Rename the repo something more generic
 
 *Could* split out the deepgram-getting and the transcript-production into separate cloud functions chained together... but I don't see a really compelling reason to do so.
+
+-->
