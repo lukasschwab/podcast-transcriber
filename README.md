@@ -1,15 +1,15 @@
 # deepgram-acw
 
-A GCP Cloud Function for automatically transcribing new episodes of a podcast, built for the [Arms Control Wonk Podcast](https://www.armscontrolwonk.com/) in mind.
+A set-it-and-forget-it GCP Cloud Function for transcribing a podcast, built for the [Arms Control Wonk Podcast](https://www.armscontrolwonk.com/) Slack community.
 
 ## Overview
 
-[main.py](./main.py) defines a cloud function that
+[main.py](./main.py) defines a Cloud Function that
 
 1. Waits on an invocation from a Pub/Sub topic;
 2. Fetches a podcast's RSS or Atom feed of episodes;
 3. Selects up to three most recent episodes for which it hasn't already produced transcripts;
-4. Submits those podcast episodes to the [Deepgram](https://deepgram.com/)'s automated speech recognition API for transcription;
+4. Submits those podcast episodes to [Deepgram](https://deepgram.com/)'s automated speech recognition API for transcription;
 5. Writes the Deepgram response and a processed transcript to Google Cloud Storage.
 
 That cloud function is designed to be invoked on a regular schedule; the [setup instructions](#Setup) below and [Makefile](./Makefile) provide `cron`-like invocations by using Cloud Scheduler to publish to the Pub/Sub topic.
@@ -20,7 +20,7 @@ That cloud function is designed to be invoked on a regular schedule; the [setup 
 
 + `gsutil` and `gcloud`
 + Python 3.7
-+ Deepgram account.
++ Deepgram account
 
 ### Setup
 
@@ -46,7 +46,7 @@ That cloud function is designed to be invoked on a regular schedule; the [setup 
     ```yaml
     # Configuration
     TARGET_FEED_URL: "https://armscontrolwonk.libsyn.com/rss"
-    TRANSCRIPTIONS_BUCKET_NAME: "acw-transcriptions"
+    TRANSCRIPTIONS_BUCKET_NAME: "transcriptions"
 
     # Secrets
     DEEPGRAM_API_KEY: "your_deepgram_secret_here"
@@ -54,7 +54,7 @@ That cloud function is designed to be invoked on a regular schedule; the [setup 
 
     </details>
 
-3. Initialize the scheudling infrastructure (Pub/Sub topic and Cloud Scheduler job; [documentation](https://cloud.google.com/scheduler/docs/tut-pub-sub)).
+3. Initialize the scheduling infrastructure (Pub/Sub topic and Cloud Scheduler job; [documentation](https://cloud.google.com/scheduler/docs/tut-pub-sub)).
 
     Run `make cron-job`.
 
@@ -90,6 +90,8 @@ Want transcripts in a different format? Change how [main.py#_process](./main.py)
 + Explain how it knows which episodes have been transcribed, "haywire" scenarios
 + Discuss cost
 + Rename the repo something more generic
++ Add tests
++ Write out to GitHub repo
 
 *Could* split out the deepgram-getting and the transcript-production into separate cloud functions chained together... but I don't see a really compelling reason to do so.
 
