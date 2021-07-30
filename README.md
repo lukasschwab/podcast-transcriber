@@ -92,6 +92,7 @@ Want transcripts in a different format? Change how [main.py#_process](./main.py)
 + Rename the repo something more generic
 + Add tests
 + Write out to GitHub repo
++ Include date in output names; this will cause all pods to reprocess
 
 *Could* split out the deepgram-getting and the transcript-production into separate cloud functions chained together... but I don't see a really compelling reason to do so.
 

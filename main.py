@@ -85,19 +85,28 @@ def __transcript_blob_name(entry) -> str:
     return entry.link + ".txt"
 
 
+# TODO: parameterize writers
 def _process(entry: feedparser.FeedParserDict):
     """
     _process gets a transcription for entry, then
     """
     logging.info("Processing entry {}: {}".format(entry.id, entry.link))
     response = _transcribe(entry)
-    # Write transcript to GCS
+    __write_txt(entry, response)
+
+
+def __write_txt(entry: feedparser.FeedParserDict, deepgram_response: dict):
     transcript_blob_name = __transcript_blob_name(entry)
     transcript_blob = transcriptions_bucket.blob(transcript_blob_name)
     with transcript_blob.open('wt') as f:
-        for u in response['results']['utterances']:
+        for u in deepgram_response['results']['utterances']:
             f.write("{}\t{}\n".format(u['speaker'], u['transcript']))
     logging.info("Wrote transcript to {}".format(transcript_blob_name))
+
+
+def __write_md(entry: feedparser.FeedParserDict, deepgram_response: dict):
+    # TODO: implement
+    pass
 
 
 def _transcribe(entry: feedparser.FeedParserDict) -> dict:
