@@ -1,5 +1,12 @@
 cloud_fn_config := --runtime "python37" --trigger-topic weekly-cron-topic --env-vars-file .env.yaml --max-instances 1 --timeout=480s
 
+.PHONY: lint deploy deploy-http cron-job cron-topic bucket
+
+# Dev targets
+
+lint: main.py
+	flake8 . --count --max-complexity=10 --statistics
+
 # Deploy targets
 
 deploy: main.py requirements.txt .env.yaml
@@ -27,8 +34,3 @@ cron-topic:
 
 bucket:
 	gsutil mb gs://transcriptions
-
-# Dev targets
-
-lint: main.py
-	flake8 . --count --max-complexity=10 --statistics

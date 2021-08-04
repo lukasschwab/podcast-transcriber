@@ -105,7 +105,7 @@ def __write_txt(entry: feedparser.FeedParserDict, deepgram_response: dict):
 
 
 def __write_md(entry: feedparser.FeedParserDict, deepgram_response: dict):
-    # TODO: implement
+    # TODO: write a Markdown representation of the transcript.
     pass
 
 
@@ -128,7 +128,7 @@ def _transcribe(entry: feedparser.FeedParserDict) -> dict:
             "punctuate": True,
             "utterances": True,
             "diarize": True,
-            "utt_split": 2,
+            "utt_split": 1.5,
         }
     ))
     # Write response JSON to GCS

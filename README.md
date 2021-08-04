@@ -1,6 +1,6 @@
 # podcast-transcriber
 
-A set-it-and-forget-it GCP Cloud Function for transcribing a podcast, built for the [Arms Control Wonk Podcast](https://www.armscontrolwonk.com/) Slack community.
+A set-it-and-forget-it GCP Cloud Function for transcribing a podcast, built for the [Arms Control Wonk Podcast](https://www.armscontrolwonk.com/) Slack community with transcriptions by [Deepgram](https://deepgram.com/).
 
 ## Overview
 
@@ -9,10 +9,12 @@ A set-it-and-forget-it GCP Cloud Function for transcribing a podcast, built for 
 1. Waits on an invocation from a Pub/Sub topic;
 2. Fetches a podcast's RSS or Atom feed of episodes;
 3. Selects up to three most recent episodes for which it hasn't already produced transcripts;
-4. Submits those podcast episodes to [Deepgram](https://deepgram.com/)'s automated speech recognition API for transcription;
+4. Submits those podcast episodes to Deepgram's automated speech recognition API for transcription;
 5. Writes the Deepgram response and a processed transcript to Google Cloud Storage.
 
-That cloud function is designed to be invoked on a regular schedule; the [setup instructions](#Setup) below and [Makefile](./Makefile) provide `cron`-like invocations by using Cloud Scheduler to publish to the Pub/Sub topic.
+That Cloud Function is designed to be invoked on a regular schedule; the [setup instructions](#Setup) below and [Makefile](./Makefile) provide `cron`-like invocations by using Cloud Scheduler to publish to the Pub/Sub topic.
+
+It avoids retranscribing episodes by checking whether a transcription artifact matching the episode's feed URI exists in GCS.
 
 ## Usage
 
@@ -86,15 +88,13 @@ Want transcripts in a different format? Change how [main.py#_process](./main.py)
 
 ## To do
 
-+ Check Deepgram usage before transcribing
-+ Explain how it knows which episodes have been transcribed, "haywire" scenarios
-+ Discuss cost
-+ Rename the repo something more generic
-+ Add tests
-+ Write out to GitHub repo
-+ Include date in output names; this will cause all pods to reprocess
-+ Mark targets as phony
-
-*Could* split out the deepgram-getting and the transcript-production into separate cloud functions chained together... but I don't see a really compelling reason to do so.
++ Cost management:
+  + Check Deepgram usage before transcribing.
+  + Discuss cost in writeup. Risk: this becomes stale.
++ Write out to GitHub repo.
++ Include date in output names; this will cause all pods to reprocess, but improve sorting.
++ Tune params more: latest episode didn't turn out well.
+  + Diarization is poor.
+  + Suspect I need to decrease the utterance threshold. Update: thresholds 1 to 1.7 split too much, and utterance tweaking may not be useful because of the diarization issues.
 
 -->
