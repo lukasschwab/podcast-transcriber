@@ -4,12 +4,12 @@ cloud_fn_config := --runtime "python37" --trigger-topic weekly-cron-topic --env-
 
 deploy: main.py requirements.txt .env.yaml
 	gcloud pubsub topics describe weekly-cron-topic
-	gcloud functions deploy "deepgram-acw-cron" \
+	gcloud functions deploy "podcast-transcriber-cron" \
 		--entry-point "topic_main" \
 		$(cloud_fn_config)
 
 deploy-http: main.py requirements.txt .env.yaml
-	gcloud functions deploy "deepgram-acw" \
+	gcloud functions deploy "podcast-transcriber" \
 		--entry-point "http_main" \
 		$(cloud_fn_config)
 

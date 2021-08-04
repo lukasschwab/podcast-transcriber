@@ -1,4 +1,4 @@
-# deepgram-acw
+# podcast-transcriber
 
 A set-it-and-forget-it GCP Cloud Function for transcribing a podcast, built for the [Arms Control Wonk Podcast](https://www.armscontrolwonk.com/) Slack community.
 
@@ -76,7 +76,7 @@ To transcribe more or fewer episodes per function execution, change the threshol
 
 #### Deepgram and transcripts
 
-The Deepgram request in [main.py#_transcribe](./main.py) is tailored to the ACW podcast; if the speech in your podcast is faster or slower, you may want to decrease or increase the `utt_split` utterance threshold, respectively.
+The Deepgram request in [main.py#_transcribe](./main.py) is tailored to the Arms Control Wonk podcast; if the speech in your podcast is faster or slower, you may want to decrease or increase the `utt_split` utterance threshold, respectively.
 
 See [Deepgram's API documentation](https://developers.deepgram.com/api-reference/speech-recognition-api) and [Python SDK](https://github.com/deepgram/python-sdk) for a documentation of the available options.
 
@@ -93,6 +93,7 @@ Want transcripts in a different format? Change how [main.py#_process](./main.py)
 + Add tests
 + Write out to GitHub repo
 + Include date in output names; this will cause all pods to reprocess
++ Mark targets as phony
 
 *Could* split out the deepgram-getting and the transcript-production into separate cloud functions chained together... but I don't see a really compelling reason to do so.
 
